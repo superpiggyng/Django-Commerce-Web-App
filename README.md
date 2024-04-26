@@ -43,7 +43,7 @@ manage.py: Django management script
 Setup and Installation  
 
 Clone the repository:  
-git clone https://github.sydney.edu.au/shng0808/Self-Learning-Project-Django-Shermaine-Ng.git  
+git clone https://github.sydney.edu.au/INFO1111-2024/Self-Learning-Project-Django-Shermaine-Ng  
 
 Navigate to the location of the cloned repository:  
 cd location  
