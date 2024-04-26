@@ -1,11 +1,10 @@
-Commerce project - Auction application
-
-The auctions app contains the main functionality of the e-commerce auction application.  
-It includes templates, models, forms, views, and URL configurations specific to the auction features.  
+Commerce project - Auction application  
 The commerce directory contains the main project-level configurations, such as settings, URL configurations, and ASGI/WSGI configurations  
 Default SQL used by Django: Default SQLite database file
 
-Auction Web Application  
+Auction App
+The auctions app contains the main functionality of the e-commerce auction application.  
+It includes templates, models, forms, views, and URL configurations specific to the auction features.  
 This is a web application for an auction platform where users can create listings, place bids, and interact with auction listings.  
 
 Features
@@ -21,7 +20,7 @@ Leave comments on auction listings
 
 Technologies Used  
 
-Django web framework  
+Django web framework (Models, Views, Templates)  
 Python programming language  
 Django Templating language, HTML, CSS (powered by bootstrap) for the frontend  
 Django's built-in testing framework  
