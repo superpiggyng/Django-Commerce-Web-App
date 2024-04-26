@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<style>
+    #item {
+        display: flex; 
+        align-items: center; 
+        border: 1px solid #ccc; 
+        padding: 10px; 
+        margin-bottom: 20px;
+    }
+
+    #image {
+        width: 50%
+    }
+
+    #description {
+        width: 50%
+    }
+
+    #description h8 {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: small;
+    }
+</style>
+
+<h2>Watchlist</h2>
+<ul>
+    {% for watchlist_item in watchlist_items %}
+    <div class="listing-container">
+        <div class="image-container">
+            <div id="item">
+                {% if watchlist_item.image %}
+                <div id="image">
+                    <img src="{{ watchlist_item.image }}" width="300" height="250">
+                </div>
+                {% endif %}
+                <div id="description">
+                    <a href="{% url 'listing_details' pk=watchlist_item.pk %}">
+                        <h3>{{ watchlist_item.title }}</h3>
+                    </a>
+                    {% if watchlist_item.model_name %}
+                    <h6>{{ watchlist_item.model_name }}</h6><br>
+                    {% endif %}
+                    <h6><b>Listing price: </b>${{ watchlist_item.price }}</h6>
+                    <h6><b>Current Highest Bid:</b> {{watchlist_item.current_bid}}</h6><br>
+                    <h8>{{watchlist_item.date_created}}</h8>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</ul>
+{% endblock %}

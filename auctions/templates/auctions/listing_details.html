@@ -1,0 +1,159 @@
+{% extends "auctions/layout.html" %}
+
+    {% block body %}
+        <style>
+            #image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #image img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            #model_name {
+                font-family: 'Times New Roman', Times, serif;
+                font-size: large;
+                text-align:left;
+            }
+
+            .full-width {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            
+
+
+        </style>
+        <h2>Listing: {{ listing.title }}</h2>
+        
+            {% if watchlist_items and listing in watchlist_items %}
+                <div id ="watchlist">
+                    <h6> <span class="badge badge-secondary">Watchlist</span></h6>
+                </div>
+            {% endif %}
+        <div id="image">
+            {% if listing.image %}
+                <img src="{{listing.image}}" width="400" height="350">
+            {% endif %}
+        </div>
+        <div id="model_name">
+            <b>Product:</b> {{listing.model_name}}
+        </div>
+        <div id="brand">
+            <b>Brand:</b> {{listing.brand}}
+        </div>
+        <p></p>
+        <div>
+            <b>Price Listed:</b> ${{listing.price}}
+        </div>
+        <p></p>
+        <div>
+            {% if listing.status == "Closed" %}
+                <b><p>Listing is Closed. No more bids can be made.</p></b>
+                {% if listing.highest_bidder == request.user %}
+                    <p>You won the bid at a price of ${{listing.current_bid}}!</p>
+                {% else %}
+                    <p>{{ listing.highest_bidder }} won the bid at a price of ${{listing.current_bid}}.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        {% if listing.status != "Closed" %}
+        <div>
+            {% if listing.current_bid %}
+                <b>Current highest bid: ${{listing.current_bid}}</b>
+            {% else %}
+                <h6><b>No Bids yet</h6><br>
+            {% endif %}
+        </div>
+        <div>
+            {% if bid_count > 0 %}
+                {{bid_count}} bid(s) so far. 
+            {% endif %}
+
+            {% if listing.highest_bidder == request.user %}
+                Your bid is currently the highest bid!
+            {% elif listing.highest_bidder != request.user and bid_count > 0 %}
+                {{ listing.highest_bidder }} made the highest bid.
+            {% else %}
+                
+            {% endif %}
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'place_bid' pk=listing.id %}">
+                    {% csrf_token %}
+                    <input type="text" id="textbox" name="textbox" placeholder="Bid" class="full-width">
+                    <input type="submit" value="Place Offer">
+                </form>
+            {% endif %}
+            {% if error_message %}
+                <p>{{ error_message }} </p>
+            {% endif %}
+        </div>
+        <br><br><br>
+        <div id="Product Details">
+            <b><h3>Details</h3></b>
+            <ul>
+                Listed by: <a href="{% url 'user_listings' username=listing.seller.username %}">{{ listing.seller.username }}</a>
+                {% if listing.product_category %}
+                    <li>
+                        <a href="{% url 'listings_by_category' listing.product_category.pk %}">
+                            {{ listing.product_category }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li>Category: No Category Listed</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="container mt-4">
+            <h3>Comments</h3>
+            <hr>
+            <div class="row">
+                {% for comment in comments %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ comment.user.username }} - {{ comment.created_at }}</h5>
+                                <p class="card-text">{{ comment.comment }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <div class="container mt-4">
+            {% if user.is_authenticated %}
+            <h3>Add a Comment</h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post" action="{% url 'add_comment' pk=listing.pk %}">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit" class="btn btn-success">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <br><br>
+        <div>
+            {% if request.user == listing.seller %}
+                <form method="post" action="{% url 'close_auction' pk=listing.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Close Auction">
+                </form>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+    {% endblock %}

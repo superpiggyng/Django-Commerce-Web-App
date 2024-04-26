@@ -1,0 +1,86 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <style>
+        #item {
+            display: flex; 
+            align-items: center; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            margin-bottom: 20px;
+        }
+
+        #image {
+            width: 50%
+        }
+
+        #description {
+            width: 50%
+        }
+
+        #description h8 {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: small;
+        }
+
+    </style>
+    <h2>Active Listings</h2>
+    <ul>
+        {% for listing in listings %}
+            <div class="listing-container">
+                <div class="image-container">
+                        <div id="item">
+                            {% if listing.image %}
+                                <div id="image">
+                                <img src="{{ listing.image }}" width="300" height="250">
+                                </div>
+                            {% endif %}
+                            <div id="description">
+                                <a href="{% url 'listing_details' pk=listing.pk %}"><h3>{{ listing.title }}</h3></a>
+                                
+
+                                {% if active_listing.model_name %}
+                                    <h6>{{ listing.model_name }}</h6><br>
+                                {% endif %}
+                                {% if active_listing.brand %}
+                                    <h6>The Brand is: {{ listing.brand }}</h6><br>
+                                {% endif %}
+                                <h6><b>Listing price: </b>${{ listing.price }}</h6>
+                                {% if listing.current_bid %}
+                                    <h6><b>Current Highest Bid:</b> ${{ listing.current_bid }}</h6><br>
+                                {% else %}
+                                    <h6><b>No Bids yet</h6><br>
+                                {% endif %}
+                                <h8>{{ listing.date_created }}</h8>
+
+                                <p>
+                                <div id ="watchlist">
+                                    {% if user.is_authenticated %}
+                                        {% if watchlist_items and listing in watchlist_items %}
+                                            <p>This item is in your <a href="{% url 'watchlist' %}">watchlist</a></p>
+                                            <form method="post" action="{% url 'watchlist' %}"">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                                                <button type="submit" name="remove_from_watchlist">Remove "{{ listing.title }}" from Watchlist</button>
+                                            </form>
+                                        {% else %}
+                                            <p>You can add this item to your watchlist</p>
+                                            <form method="post" action="{% url 'watchlist' %}"">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                                                <button type="submit" name="add_to_watchlist">Add "{{ listing.title }}" to Watchlist</button>
+                                            </form>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                </p>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

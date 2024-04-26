@@ -1,0 +1,14 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+<h2>Search Results</h2>
+<ul>
+    {% for listing in listings %}
+    <li>
+        <a href="{% url 'listing_details' pk=listing.pk %}">{{ listing.title }}</a>
+    </li>
+    {% empty %}
+    <li>No listings found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
