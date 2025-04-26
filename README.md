@@ -48,6 +48,12 @@ git clone https://github.com/superpiggyng/Django-Commerce-Web-App
 Navigate to the location of the cloned repository:
 cd location
 
+Activate virtual environment and install dependencies:
+Linux:
+    python3 -m venv myenv
+    source myenv/bin/activate
+    pip install -r requirements.txt
+
 Command to make migrations if needed:
 python3 manage.py makemigrations
 

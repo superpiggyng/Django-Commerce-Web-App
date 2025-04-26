@@ -1,0 +1,22 @@
+# Virtual environment
+myenv/
+
+# Python artifacts
+*.pyc
+__pycache__/
+
+# Environment variables
+.env
+
+# Local database
+db.sqlite3
+
+# Logs
+*.log
+
+# IDE / Editor settings
+.idea/
+.vscode/
+
+# macOS junk files
+.DS_Store
